@@ -29,7 +29,6 @@ export const loginUser = async (
     return { error: "Email does not exists!" };
   }
 
-  console.log("usr", existingUser)
   if (!existingUser.emailVerified) {
     console.log("email not verify")
     const verificationToken = await generateVerificationToken(
@@ -110,7 +109,7 @@ export const loginUser = async (
       redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
     });
   } catch (error) {
-    console.log('Error',error)
+    console.log('Error:',error)
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
