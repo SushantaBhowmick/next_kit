@@ -35,12 +35,14 @@ export const loginUser = async (
       existingUser.email
     );
 
+    const link = "new-verification"
     const subject="Verify Your email address"
      const htmlmsg="to confirm email."
 
     await sendEmail(
       verificationToken.email,
       verificationToken.token,
+      link,
       subject,
       htmlmsg
     );

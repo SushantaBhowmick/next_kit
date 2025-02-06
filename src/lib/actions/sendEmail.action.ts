@@ -6,10 +6,11 @@ const domain = process.env.NEXT_PUBLIC_APP_URL;
 export const sendEmail = async (
   email: string,
   token: string,
+  link:string,
   subject: string,
-  htmlmsg: string
+  htmlmsg: string,
 ) => {
-  const confirmLink = `${domain}/auth/new-verification?token=${token}`;
+  const confirmLink = `${domain}/auth/${link}?token=${token}`;
   try {
 
     const transport = nodemailer.createTransport({
