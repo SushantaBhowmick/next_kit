@@ -9,7 +9,7 @@ export async function POST(req:Request){
         return NextResponse.json({ error: "Missing fields!" }, { status: 400 });
       }
 
-    const response = await sendEmail(email,token);
+    const response = await sendEmail(email,token,"new-verification","","");
 
     return NextResponse.json(response)
 }
