@@ -7,9 +7,11 @@ import { getUserByEmail, getUserByID } from "@/data/user";
 import { generateVerificationToken } from "../tokens";
 import { sendVerificationEmail } from "../mail";
 import bcrypt from "bcryptjs";
+import { imageUPloader } from "@/utils/imageUploader";
 
 export const settings = async(values:z.infer<typeof SettingsSchema>)=>{
     const user = await currentUser();
+    let imageUrl = values.image;
 
     if (!user) {
       return { error: "Unauthorized!" };
@@ -64,6 +66,15 @@ export const settings = async(values:z.infer<typeof SettingsSchema>)=>{
   
     if (!values.name) {
         return { error: "Name cannot be empty!" };
+      }
+
+      //upload image
+      if(imageUrl){
+        imageUrl=await imageUPloader(imageUrl);
+        if(!imageUrl){
+          return {error:"Image upload failed!"};
+        }
+        values.image=imageUrl;
       }
       // Update the user
       await db.user.update({

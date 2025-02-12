@@ -1,5 +1,5 @@
 "use client";
-import { useState, useTransition } from "react";
+import React, { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -15,11 +15,7 @@ import {
   FormControl,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  Card,
-  CardContent,
-  CardHeader,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { settings } from "@/lib/actions/settings.action";
 import { useSession } from "next-auth/react";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
@@ -34,10 +30,14 @@ import {
 } from "@/components/ui/select";
 import { UserRole } from "@prisma/client";
 import { Switch } from "@/components/ui/switch";
+import Image from "next/image";
 const SettingsPage = () => {
   const user = useCurrentUser();
   const [error, setError] = useState<string | undefined>();
   const [success, setSuccess] = useState<string | undefined>();
+  const [previewUrl, setPreviewUrl] = useState<string | null>(
+    user?.image || null
+  );
 
   const { update } = useSession();
   const [isPending, startTransition] = useTransition();
@@ -46,6 +46,7 @@ const SettingsPage = () => {
     defaultValues: {
       name: user?.name || undefined,
       email: user?.email || undefined,
+      image: user?.image || undefined,
       password: undefined,
       newPassword: undefined,
       isTwoFactorEnabled: user?.isTwoFactorEnabled || undefined,
@@ -53,7 +54,17 @@ const SettingsPage = () => {
     },
   });
 
+  const handleFileChange = async(e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      console.log(file)
+      setPreviewUrl(URL.createObjectURL(file));
+      form.setValue("image",file)
+    }
+  };
+
   const onSubmit = (values: z.infer<typeof SettingsSchema>) => {
+    console.log(values);
     startTransition(() => {
       settings(values)
         .then((data) => {
@@ -176,6 +187,25 @@ const SettingsPage = () => {
                       </FormItem>
                     )}
                   />
+
+                  {/* image upload */}
+
+                  <div className="space-y-2">
+                    <FormLabel>Profile Picture</FormLabel>
+                    {
+                      previewUrl && (
+                        <div className="w-24 h-24 relative rounded-full overflow-hidden border">
+                          <Image src={previewUrl} alt="Preview" layout="fill" objectFit="cover" />
+                        </div>
+                      )
+                    }
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      disabled={isPending}
+                    />
+                  </div>
                 </>
               )}
 
