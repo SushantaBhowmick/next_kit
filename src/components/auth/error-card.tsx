@@ -1,7 +1,7 @@
 import { FaExclamationTriangle } from "react-icons/fa";
 import CardWrapper from "./card-wrapper";
 
-const ErrorCard = () => {
+const   ErrorCard = () => {
   return (
     <CardWrapper
       headerLabel="Oops ! Something went wrong!"
