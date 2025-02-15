@@ -54,12 +54,12 @@ const SettingsPage = () => {
     },
   });
 
-  const handleFileChange = async(e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      console.log(file)
+      console.log(file);
       setPreviewUrl(URL.createObjectURL(file));
-      form.setValue("image",file)
+      form.setValue("image", file);
     }
   };
 
@@ -192,13 +192,17 @@ const SettingsPage = () => {
 
                   <div className="space-y-2">
                     <FormLabel>Profile Picture</FormLabel>
-                    {
-                      previewUrl && (
-                        <div className="w-24 h-24 relative rounded-full overflow-hidden border">
-                          <Image src={previewUrl} alt="Preview" layout="fill" objectFit="cover" />
-                        </div>
-                      )
-                    }
+                    {previewUrl && (
+                      <div className="w-24 h-24 rounded-full overflow-hidden border flex justify-center items-center">
+                        <Image
+                          src={previewUrl}
+                          alt="Preview"
+                          height={200}
+                          width={200}
+                          className="object-cover w-full h-full"
+                        />
+                      </div>
+                    )}
                     <Input
                       type="file"
                       accept="image/*"

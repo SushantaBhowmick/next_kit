@@ -31,6 +31,12 @@ const Navbar = () => {
         >
           <Link href="/settings">Settings</Link>
         </Button>
+        <Button
+          variant={pathname === "/notification" ? "default" : "outline"}
+          asChild
+        >
+          <Link href="/notification">Send Notification</Link>
+        </Button>
       </div>
       <UserButton />
     </nav>
