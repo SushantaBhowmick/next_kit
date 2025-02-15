@@ -27,6 +27,19 @@ export const NewPasswordSchema = z.object({
   }),
 });
 
+// notification Schema
+export const NotificationSchema = z.object({
+  token: z.string().min(1, {
+    message: "Token is required",
+  }),
+  title: z.string().min(1, {
+    message: "Title is required",
+  }),
+  body: z.string().min(1,{
+    message: "Body is required",
+  })
+});
+
 // Register Schema
 export const RegisterSchema = z.object({
   email: z.string().email({
