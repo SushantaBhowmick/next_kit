@@ -14,7 +14,7 @@ export const resetPassword = async (values: z.infer<typeof ResetSchema>) => {
   const existingUser = await getUserByEmail(email);
   if (!existingUser) return { error: "Email not found!" };
 
-  //Generate a Passowrd reset email
+  //Generate a Password reset email
   const passwordResetToken = await generatePasswordResetToken(email);
 
   //send the password reset email
